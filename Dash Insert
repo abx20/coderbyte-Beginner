@@ -20,18 +20,23 @@
 *                                                                                      *
 ***************************************************************************************/
 
-function DashInsert(str) { 
+function DashInsert(str) {
+  let result = '';
 
-   var idx = 0;
-    while (idx < str.length-1) {
-        if (Number(str[idx]) % 2 === 1 && Number(str[idx+1]) % 2 === 1) {
-          str = str.slice(0,idx+1) + "-" + str.slice(idx+1);
-          idx = idx + 2;
-        }
-        else {  
-            idx++;
-        }
+  for (let i = 0; i < str.length; i++) {
+    result += str[i];
+    if (i < str.length - 1) {
+      const currentNum = parseInt(str[i]);
+      const nextNum = parseInt(str[i + 1]);
+      if (currentNum % 2 !== 0 && nextNum % 2 !== 0) {
+        result += '-';
+      }
+    }
   }
-  return str;  
-         
+
+  return result;
 }
+
+// Test cases
+console.log(DashInsert("454793")); // Expected output: "4547-9-3"
+console.log(DashInsert("123456")); // Expected output: "123456"
