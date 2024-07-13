@@ -31,36 +31,34 @@
 *    3) Else return false                                                              *
 *                                                                                      *
 ***************************************************************************************/
-function CountingMinutesI(str) { 
-    var time1Obj = {}, time2Obj = {}, timeDiff;
-    
-    time1Obj = setTimeObject(str, 0);
-    time2Obj = setTimeObject(str, 1);
-    
-    if (time1Obj.ampm == time2Obj.ampm && time1Obj.tot > time2Obj.tot) {
-        timeDiff = (((12 - time1Obj.hours + 12) * 60) - (time1Obj.mins)) + ((time2Obj.hours * 60) + time2Obj.mins);
-    } 
-    else if (time1Obj.ampm == time2Obj.ampm && time1Obj.tot < time2Obj.tot) {
-        timeDiff = ((time2Obj.hours * 60) + time2Obj.mins) - ((time1Obj.hours * 60) + time1Obj.mins);
-    }
-    else if (time1Obj.ampm !== time2Obj.ampm && time1Obj.ampm === "am") {
-        timeDiff = (((12 - time1Obj.hours) * 60) - time1Obj.mins) + ((time2Obj.hours * 60) + time2Obj.mins);
-    }
-    else { 
-        timeDiff = (((12 - time1Obj.hours) * 60) - time1Obj.mins) + ((time2Obj.hours * 60) + time2Obj.mins);
+function CountingMinutesI(str) {
+  function timeToMinutes(time) {
+    let [hours, minutesPart] = time.split(':');
+    let minutes = parseInt(minutesPart.slice(0, -2));
+    let period = minutesPart.slice(-2);
+    hours = parseInt(hours);
+
+    if (period === 'pm' && hours !== 12) {
+      hours += 12;
+    } else if (period === 'am' && hours === 12) {
+      hours = 0;
     }
 
-    return timeDiff;
+    return hours * 60 + minutes;
+  }
+
+  const [start, end] = str.split('-');
+  const startMinutes = timeToMinutes(start);
+  const endMinutes = timeToMinutes(end);
+
+  let difference = endMinutes - startMinutes;
+  if (difference < 0) {
+    difference += 1440; // add 24 hours worth of minutes
+  }
+
+  return difference;
 }
-    
-function setTimeObject(str, num) {
-    var arr = str.split("-");
-    var tObject = {};
-    
-    tObject.hours = Number(arr[num].slice(0,arr[num].length-2).split(":")[0]);
-    tObject.mins = Number(arr[num].slice(0,arr[num].length-2).split(":")[1]);
-    tObject.ampm = arr[num].slice(-2);
-    tObject.tot = tObject.hours * 100 + tObject.mins;
-    
-    return tObject;
-}
+
+// Test cases
+console.log(CountingMinutesI("9:00am-10:00am")); // Expected output: 60
+console.log(CountingMinutesI("1:00pm-11:00am")); // Expected output: 1320
