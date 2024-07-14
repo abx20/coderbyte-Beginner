@@ -18,11 +18,14 @@
 *    2) Use RegExp to format string as required                                        *
 *                                                                                      *
 ***************************************************************************************/
-function DivisionStringified(num1,num2) { 
- 
-  var tot = Math.round(num1 / num2);
-  var newNum = tot.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+function DivisionStringified(num1, num2) {
+  // Perform the division and round the result to the nearest integer
+  const result = Math.round(num1 / num2);
 
-  return newNum;
-         
+  // Convert the result to a string and format it with commas
+  return result.toLocaleString();
 }
+
+// Test cases
+console.log(DivisionStringified(123456789, 10000)); // Expected output: "12,346"
+console.log(DivisionStringified(1000000, 3)); // Expected output: "333,333"
