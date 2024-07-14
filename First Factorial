@@ -22,13 +22,15 @@
 *                                                                                      *
 ***************************************************************************************/
 
-function FirstFactorial(num) { 
-
-  var tot = 1;
-  for (var i = 2; i <= num; i++) {
-    tot *= i;
+function FirstFactorial(num) {
+  let factorial = 1;
+  for (let i = 1; i <= num; i++) {
+    factorial *= i;
   }
-   
-  return tot;
-         
+  return factorial;
 }
+
+// Test cases
+console.log(FirstFactorial(4)); // Expected output: 24
+console.log(FirstFactorial(5)); // Expected output: 120
+console.log(FirstFactorial(1)); // Expected output: 1
